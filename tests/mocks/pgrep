@@ -1,0 +1,6 @@
+#!/bin/bash
+if [[ "${MOCK_RUNNING_PROCESS:-}" == "${2:-}" ]]; then
+  printf '12345\n'
+  exit 0
+fi
+exit 1

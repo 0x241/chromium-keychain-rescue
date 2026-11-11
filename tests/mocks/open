@@ -1,0 +1,14 @@
+#!/bin/bash
+printf 'OPEN' >> "$MOCK_OPEN_LOG"
+printf '\t%s' "$@" >> "$MOCK_OPEN_LOG"
+printf '\n' >> "$MOCK_OPEN_LOG"
+if [[ -n "${MOCK_FAIL_OPEN_NUMBER:-}" ]]; then
+  count=0
+  [[ ! -f "$MOCK_OPEN_COUNT" ]] || IFS= read -r count < "$MOCK_OPEN_COUNT"
+  count=$((count+1))
+  printf '%s\n' "$count" > "$MOCK_OPEN_COUNT"
+  if (( count == MOCK_FAIL_OPEN_NUMBER )); then
+    exit 1
+  fi
+fi
+exit 0

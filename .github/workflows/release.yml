@@ -1,0 +1,39 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  source-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Run release checks
+        run: |
+          for script in chromium-keychain-rescue.sh tests/*.sh tests/mocks/*; do
+            bash -n "$script"
+          done
+          bash tests/unit_test.sh
+          bash tests/refusal_test.sh
+          bash tests/privacy_test.sh
+      - name: Bundle the public source
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          mkdir -p dist
+          zip -q -r "dist/chromium-keychain-rescue-${RELEASE_TAG}.zip" \
+            chromium-keychain-rescue.sh README.md LICENSE .gitignore .github tests
+          (cd dist && sha256sum "chromium-keychain-rescue-${RELEASE_TAG}.zip" > SHA256SUMS)
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$RELEASE_TAG" \
+            "dist/chromium-keychain-rescue-${RELEASE_TAG}.zip" dist/SHA256SUMS \
+            --title "Chromium Keychain Rescue ${RELEASE_TAG}" \
+            --verify-tag --generate-notes

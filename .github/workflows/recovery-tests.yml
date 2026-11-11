@@ -1,0 +1,31 @@
+name: Recovery safety tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  simulated-recovery:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Check Bash syntax
+        run: |
+          for script in chromium-keychain-rescue.sh tests/*.sh tests/mocks/*; do
+            bash -n "$script"
+          done
+      - name: Check multi-profile sessions and Keychain restoration
+        run: bash tests/unit_test.sh
+      - name: Check safe refusal paths
+        run: bash tests/refusal_test.sh
+      - name: Check publication privacy
+        run: bash tests/privacy_test.sh

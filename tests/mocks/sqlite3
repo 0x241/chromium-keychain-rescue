@@ -1,0 +1,13 @@
+#!/bin/bash
+# A simulated SQLite query. Never accesses browser credentials.
+for arg in "$@"; do
+  if [[ "$arg" == */'Login Data' ]]; then
+    if grep -q 'EMPTY' "$arg"; then
+      printf '0\n'
+    else
+      printf '2\n'
+    fi
+    exit 0
+  fi
+done
+exit 1

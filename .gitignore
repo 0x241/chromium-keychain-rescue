@@ -1,0 +1,63 @@
+# Never commit copied browser credentials or macOS Keychains.
+**/Login Data
+**/Login Data-*
+**/Login Data For Account
+**/Login Data For Account-*
+*.keychain
+*.keychain-db
+*.p12
+*.pfx
+*.pem
+*.key
+*.sqlite
+*.sqlite3
+*.db
+*.db-wal
+*.db-shm
+*.csv
+*passwords*.json
+*Passwords*.json
+
+# Temporary recovery sessions and Time Machine/disk artifacts.
+brave-recovery.*/
+chromium-keychain-rescue.*/
+recovery-test.*/
+keychain-rescue-unit.*/
+keychain-rescue-refusal.*/
+*.dmg
+*.sparsebundle
+*.sparseimage
+*.img
+*.iso
+*.log
+*.zip
+*.tar
+*.tar.gz
+dist/
+
+# Local secrets and auth credentials.
+# One-time maintainer helper: distributed separately, never published to GitHub.
+/publish.sh
+.env
+.env.*
+secrets/
+credentials/
+id_rsa*
+id_ed25519*
+
+# macOS and editors.
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+.TemporaryItems
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.tmp
+*.bak
