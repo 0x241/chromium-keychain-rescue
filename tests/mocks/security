@@ -2,9 +2,11 @@
 [[ "${1:-}" == list-keychains && "${2:-}" == -d && "${3:-}" == user ]] || exit 2
 if [[ "${4:-}" == -s ]]; then
   shift 4
-  printf 'SET' >> "$MOCK_SECURITY_LOG"
-  printf '\t%s' "$@" >> "$MOCK_SECURITY_LOG"
-  printf '\n' >> "$MOCK_SECURITY_LOG"
+  {
+    printf 'SET'
+    printf '\t%s' "$@"
+    printf '\n'
+  } >> "$MOCK_SECURITY_LOG"
   exit 0
 fi
 printf '    "%s"\n' "$MOCK_CURRENT_KEYCHAIN"
